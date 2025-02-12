@@ -18,18 +18,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb-drivers")
+@Table(name = "tb_drivers")
 public class Driver implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto incremento
     private Long Id;
+
     private String name;
     private Integer number;
 
 
-
-    
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -45,9 +45,4 @@ public class Driver implements Serializable{
     public int hashCode() {
         return Objects.hash(Id);
     }
-
-
-
-    
-    
 }

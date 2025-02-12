@@ -1,25 +1,31 @@
 package com.services.CRUD_test.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.services.CRUD_test.entities.Driver;
 import com.services.CRUD_test.repository.DriverRepository;
+
 
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner{
 
-    @SuppressWarnings("unused")
     @Autowired
-    private DriverRepository repository;
+    private DriverRepository driverRepository;
 
 
     @Override
     public void run(String... args) throws Exception {
         
+        Driver d1 = new Driver(null, "Lando Norris", 4);
+        Driver d2 = new Driver(null, "Oscar Piastri", 81);   
         
+        driverRepository.saveAll(Arrays.asList(d1, d2));
     }
     
 }
