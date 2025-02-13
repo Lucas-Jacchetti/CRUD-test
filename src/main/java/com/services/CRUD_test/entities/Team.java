@@ -1,6 +1,8 @@
 package com.services.CRUD_test.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,59 +11,60 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_drivers")
-public class Driver implements Serializable{
+@Table(name = "tb_teams")
+public class Team implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto incremento
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     private String name;
-    private Integer number;
+    private Integer placement;
+    private String model;
 
+    @JsonIgnore //para evitar loop infinito
+    @OneToMany(mappedBy = "team") 
+    private List<Driver> drivers = new ArrayList<>();
     
-    @ManyToOne
-    @JoinColumn(name = "team_id") //nome da chave estrangeira 
-    private Team team;
-
-    @JsonIgnore
-    public Team getTeam(){
-        return this.team;
+    
+    public List<Driver> getDriver(){
+        return this.drivers;
     }
 
 
-    public Driver(Long Id, String name, Integer number, Team team) {
+    public Team(Long Id, String name, Integer placement, String model) {
         this.Id = Id;
         this.name = name;
-        this.number = number;
-        this.team = team;
+        this.placement = placement;
+        this.model = model;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Driver)) {
+        if (!(o instanceof Team)) {
             return false;
         }
-        Driver driver = (Driver) o;
-        return Objects.equals(Id, driver.Id);
+        Team team = (Team) o;
+        return Objects.equals(Id, team.Id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(Id);
     }
+
 }
