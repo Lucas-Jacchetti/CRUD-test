@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.services.CRUD_test.entities.Driver;
 import com.services.CRUD_test.services.DriverServices;
 
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +44,7 @@ public class DriverResources {
     @PostMapping
     public ResponseEntity <Driver> insert(@RequestBody Driver dr){
         dr = services.insert(dr);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dr.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{Id}").buildAndExpand(dr.getId()).toUri();
         return ResponseEntity.created(uri).body(dr);
     }
 

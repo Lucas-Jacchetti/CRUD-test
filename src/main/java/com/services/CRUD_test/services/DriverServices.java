@@ -30,7 +30,7 @@ public class DriverServices implements Serializable{
     }
 
     public void deleteById(Long Id){  //*TODO CRIAR EXCESSÕES */
-        repository.findById(Id); 
+        repository.deleteById(Id); 
     }
 
     public Driver update(Long Id, Driver obj){

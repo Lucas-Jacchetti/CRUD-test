@@ -64,4 +64,15 @@ public class Driver implements Serializable{
     public int hashCode() {
         return Objects.hash(Id);
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " Id='" + getId() + "'" +
+            ", name='" + getName() + "'" +
+            ", number='" + getNumber() + "'" +
+            ", team='" + getTeam() + "'" +
+            "}";
+    }
+
 }
