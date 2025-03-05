@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.services.CRUD_test.entities.Team;
 import com.services.CRUD_test.repository.TeamRepository;
+import com.services.CRUD_test.services.exceptions.DataBaseException;
+import com.services.CRUD_test.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class TeamServices implements Serializable{
@@ -22,21 +25,36 @@ public class TeamServices implements Serializable{
 
     public Team findById(Long Id){
         Optional <Team> tm = repository.findById(Id);
-        return tm.orElseThrow(() -> new RuntimeException()); //*TODO SUBSTITUIÇÃO DE RUNTIMEEXCEPTION POR EXCESSÃO PEROSNALIZADA */
+        return tm.orElseThrow(() -> new ResourceNotFoundException(Id)); 
     }
 
     public Team insert(Team tm){
         return repository.save(tm);
     }
 
-    public void deleteById(Long Id){  //*TODO CRIAR EXCESSÕES */
-        repository.findById(Id); 
+    public void deleteById(Long Id){ 
+        try{
+            if (!repository.existsById(Id)) {
+                throw new ResourceNotFoundException(Id);
+            }  repository.deleteById(Id);
+        }
+        catch (ResourceNotFoundException e){
+            throw new ResourceNotFoundException(Id);
+        }
+        catch (DataIntegrityViolationException e){
+            throw new DataBaseException(e.getMessage());
+        }
+        
     }
 
     public Team update(Long Id, Team obj){
-        Team tm = repository.getReferenceById(Id);  //*TODO CRIAR EXCESSÕES */
-        updateTeam(tm, obj);
-        return repository.save(tm);
+        try {
+            Team tm = repository.getReferenceById(Id); 
+            updateTeam(tm, obj);
+            return repository.save(tm);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(Id);
+        }
         
     }
 
